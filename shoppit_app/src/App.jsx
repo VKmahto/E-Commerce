@@ -10,12 +10,11 @@ const App = () => {
   return (
     <Router>
       <Header />
-      {/* <Section/> */}
-      {/* <Product /> */}
       <Routes>
         <Route path="/product" element={<Product />} />
-        <Route path='/product/hp' element={<Product_details/>} ></Route>
+        <Route path='/product_details' element={<Product_details/>} ></Route>
         <Route path="/category" element={<Category/>}/>
+
       </Routes>
     </Router>
   );

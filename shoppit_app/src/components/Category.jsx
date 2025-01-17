@@ -40,7 +40,7 @@ const Category = () => {
         alert("Category updated successfully!");
       } else {
         // Create new category (POST request)
-        await axios.post("http://localhost:2000/shopapp/api/category/", formData);
+        await axios.post("http://localhost:2000/shopapp/api/category/",formData);
         alert("Category created successfully!");
       }
       setFormData({ id: "", name: "", description: "", username: "" });
@@ -70,9 +70,12 @@ const Category = () => {
         <div className="col-6">
           <div className="card mb-4">
             <div className="card-body">
-              <h4 className="card-title text-center">
-                {isEditMode ? "Edit Category" : "Create Category"}
-              </h4>
+              <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm ">
+                <h4 className="card-title text-center">
+                  {isEditMode ? "Edit Category" : "Create Category"}
+                </h4>
+              </nav>
+              <br />
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
@@ -120,14 +123,7 @@ const Category = () => {
                   <button type="submit" className="btn btn-primary">
                     {isEditMode ? "Update" : "Save"}
                   </button>
-
-                  <button
-                    type="button"
-                    className="btn btn-danger mx-2"
-                    onClick={() => setIsEditMode(false)}
-                  >
-                    Cancel
-                  </button>
+                  
                 </div>
               </form>
             </div>
@@ -138,11 +134,14 @@ const Category = () => {
 
         <div className="col-6">
         <div className="card mb-4">
+           
             <div className="card-body">
-            <h4 className="card-title text-center">
-                Category List
-            </h4>
-
+              <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                <h4 className="card-title text-center">
+                    Category List
+                </h4>
+              </nav>
+              <br />
             <table className="table table-striped">
                 <thead>
                 <tr>

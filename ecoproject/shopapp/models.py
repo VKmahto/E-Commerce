@@ -5,7 +5,7 @@ from django.db import models
 
 class Category(models.Model):
     id                 = models.AutoField(primary_key=True)
-    name               = models.CharField(max_length=1, null=False)
+    name               = models.CharField(max_length=100, null=False)
     description        = models.CharField(max_length=100, null=False)
     username           = models.CharField(max_length=30, null=False)
     datetime           = models.DateTimeField(auto_now_add=True, null=False)

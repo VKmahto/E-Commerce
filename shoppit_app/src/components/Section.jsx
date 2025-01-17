@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 
 
 const Section = () => {
- 
-
+  
   return (
     <div className="bg-dark text-white p-5">
       <div className="container text-center">

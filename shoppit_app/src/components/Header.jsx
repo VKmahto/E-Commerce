@@ -1,11 +1,12 @@
 import React from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
-
+import Section from './Section';
+import Product from './Product';
 
 const Header = () => {
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div className="container">
           <a className="navbar-brand fy-3 fw-bold text-uppercase" href="/">SHOPPIT</a>
           <button
@@ -36,6 +37,7 @@ const Header = () => {
           </div>
         </div>
       </nav>
+      <Section/>
     </div>
   );
 };
