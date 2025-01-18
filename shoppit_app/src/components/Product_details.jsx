@@ -36,8 +36,10 @@ const ProductDetails = () => {
       const response = await axios.get("http://localhost:2000/shopapp/api/product/");
       const updatedProducts = response.data.map((product) => ({
         ...product,
-        image: `http://localhost:2000/${product.image}`, 
+        // image: `http://localhost:2000/${product.image}/`, 
+        image: `http://localhost:2000${product.image.startsWith("/") ? product.image : `/${product.image}`}`,
       }));
+      
       
       setProducts(updatedProducts);
 
@@ -102,9 +104,12 @@ const ProductDetails = () => {
         <div className="col-md-6">
           <div className="card mb-4">
             <div className="card-body">
-              <h4 className="card-title text-center">
-                {isEditMode ? "Edit Product" : "Create Product"}
-              </h4>
+              <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm ">
+                <h4 className="card-title text-center">
+                  {isEditMode ? "Edit Product" : "Create Product"}
+                </h4>
+              </nav>
+              <br />
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
@@ -196,7 +201,10 @@ const ProductDetails = () => {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h4 className="card-title text-center">Product List</h4>
+              <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm ">
+                <h4 className="card-title text-center">Product List</h4>
+              </nav>
+              <br />
               <table className="table">
                 <thead>
                   <tr>
@@ -215,7 +223,7 @@ const ProductDetails = () => {
                       <td>{product.id}</td>
                       <td>{product.name}</td>
                       <td>
-                        <img src={product.image} alt="Product" width="50" />
+                        <img src={product.image} alt={product.name} width="50" height="50"/>
                       </td>
                       <td>{product.price}</td>
                       <td>{product.category}</td>

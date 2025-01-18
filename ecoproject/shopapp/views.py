@@ -5,6 +5,7 @@ from .serializers import ProductSerializer,CategorySerializer
 from rest_framework.response import Response
 from rest_framework import status
 
+
 @api_view(["GET", "POST", "PUT"])
 def category(request):
     if request.method == "GET":
@@ -36,8 +37,6 @@ def category(request):
 def product(request):
     if request.method == "GET":
         products = Product.objects.all()
-        for product in products:
-            product.image = product.image.url 
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 
