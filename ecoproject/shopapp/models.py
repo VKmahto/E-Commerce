@@ -53,6 +53,7 @@ class Product(models.Model):
         verbose_name = 'Product'
         verbose_name_plural = 'Product'
     
-    
+
+
 
    
