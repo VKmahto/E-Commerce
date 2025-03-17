@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
 
 const Product = () => {
   const [products, setProducts] = useState([]); // State to store fetched products
@@ -37,6 +39,7 @@ const Product = () => {
           {products.map((product) => (
             <div className="col-md-3 mb-4" key={product.id}>
               <div className="card">
+              <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'black' }}>
                 <img
                   src={product.image}
                   className="card-img-top"
@@ -49,6 +52,7 @@ const Product = () => {
                   {/* Uncomment this if you want a button */}
                   {/* <button className="btn btn-primary">Add to Cart</button> */}
                 </div>
+              </Link>
               </div>
             </div>
           ))}

@@ -7,32 +7,39 @@ import Product_details from "./components/Product_details"
 import Category from "./components/Category"
 import Login from "./components/Login"
 import Register from "./components/Register"
+import Product_view_dtls from "./components/Product_view_dtls"
+import Cart from "./components/Cart"
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+
 
 const App = () => {
-  const currentPath = window.location.pathname
-  const showSection = currentPath === "/"
+  // const currentPath = window.location.pathname
+  // const showSection = currentPath === "/"
+
   return (
-    <Router>
-      <div className="app-container">
-        {" "}
-        <Header />
-        <br />
-        <br />
-        <main className="main-content">
-          {" "}
-          {/* Add this main element */}
-          {showSection && <Section />}
-          <Routes>
-            <Route path="/product" element={<Product />} />
-            <Route path="/product_details" element={<Product_details />} />
-            <Route path="/category" element={<Category />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
-  )
+    <PayPalScriptProvider options={{ "client-id": "AVPSEXS4X0vdMr_zWY2dYAR35cYNYM1hXu1GDw266Mf98A6wqpivCCKlPU0bgickW6qbk1qF6tE_hVTi" }}>
+      <Router>
+        <div className="app-container">
+          <Header />
+          <br />
+          <br />
+          <main className="main-content">
+            {/* {showSection && <Section />} */}
+            <Routes>
+              <Route path="/" element={<Section />} />
+              <Route path="/product" element={<Product />} />
+              <Route path="/product_details" element={<Product_details />} />
+              <Route path="/Product/:id" element={<Product_view_dtls />} />
+              <Route path="/category" element={<Category />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </PayPalScriptProvider>
+  );
 }
 
 export default App

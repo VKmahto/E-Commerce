@@ -7,5 +7,8 @@ urlpatterns = [
     path('api/product/', views.product, name='product'),
     path('api/register/', UserRegistrationView.as_view(), name='user-register'),
     path('api/login/', UserLoginView.as_view(), name='user-login'),
+    path('api/product/<int:id>/', views.productviewdtls, name='productviewdtls'),
+    path('api/create-order/', views.create_order, name='create-order'),
+
 ]
 

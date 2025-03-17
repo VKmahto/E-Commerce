@@ -155,3 +155,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = '/media/'  # The base URL for accessing media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+RAZORPAY_KEY_ID = "rzp_test_v7C9DgSDEywjGi"
+RAZORPAY_KEY_SECRET = "mayn0Ro9gTKdUWH9A6PPVEDc"

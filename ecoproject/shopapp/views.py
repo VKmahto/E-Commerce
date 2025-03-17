@@ -12,6 +12,11 @@ from .models import *
 import random
 import socket
 from django.utils.timezone import now
+import razorpay
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 class UserRegistrationView(APIView):
@@ -123,6 +128,24 @@ def product(request):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+@api_view(["GET"])
+def productviewdtls(request, id):
+    product = Product.objects.get(id=id)
+    serializer = ProductSerializer(product)
+    return Response(serializer.data)
     
-  
+
+@csrf_exempt
+def create_order(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        amount = int(data.get("amount")) * 100  # Razorpay expects amount in paise
+
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        payment = client.order.create({
+            "amount": amount,
+            "currency": "INR",
+            "payment_capture": "1"
+        })
+
+        return JsonResponse({"order_id": payment["id"], "amount": payment["amount"]})
