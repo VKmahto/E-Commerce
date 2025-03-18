@@ -88,6 +88,7 @@ const Category = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
+                      placeholder="Name"
                     />
                   </div>
 
@@ -101,6 +102,7 @@ const Category = () => {
                       value={formData.username}
                       onChange={handleChange}
                       required
+                      placeholder="Username"
                     />
                   </div>
 
@@ -113,6 +115,7 @@ const Category = () => {
                       value={formData.description}
                       onChange={handleChange}
                       required
+                      placeholder="Description"
                     />
                   </div>
                 </div>

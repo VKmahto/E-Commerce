@@ -12,7 +12,6 @@ const Cart = () => {
         paymentType: "Cash on Delivery"
     });
 
-    // Static list of banks for dropdown
     const bankOptions = [
         "HDFC Bank",
         "State Bank of India",
@@ -21,33 +20,28 @@ const Cart = () => {
         "Punjab National Bank"
     ];
 
-    // Load cart items from local storage when component mounts
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
         setCartItems(cart);
     }, []);
 
-    // Function to remove an item from the cart
     const removeFromCart = (id) => {
         const updatedCart = cartItems.filter((item) => item.id !== id);
         setCartItems(updatedCart);
         localStorage.setItem("cart", JSON.stringify(updatedCart));
     };
 
-    // Pricing calculations
     const totalMRP = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
     const discount = 1768;
     const platformFee = 20;
-    const shippingFee = 0; // Free shipping
+    const shippingFee = 0;
     const totalAmount = totalMRP - discount + platformFee + shippingFee;
 
-    // Handle COD Form Input Changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setCodDetails({ ...codDetails, [name]: value });
     };
 
-    // Handle COD Form Submission
     const handleCODSubmit = (e) => {
         e.preventDefault();
         alert("COD Details Submitted:\n" + JSON.stringify(codDetails, null, 2));
@@ -58,9 +52,7 @@ const Cart = () => {
     return (
         <div className="container my-5">
             <h2 className="fw-bold text-center mb-4">Shopping Cart</h2>
-
             <div className="row">
-                {/* Cart Items List */}
                 <div className="col-md-8">
                     {cartItems.length === 0 ? (
                         <p className="text-center">Your cart is empty.</p>
@@ -69,7 +61,7 @@ const Cart = () => {
                             {cartItems.map((item) => (
                                 <li key={item.id} className="list-group-item d-flex align-items-center">
                                     <img
-                                        src={`http://localhost:2000${item.image}`}
+                                        src={item.image}
                                         alt={item.name}
                                         className="rounded"
                                         style={{ width: "80px", height: "80px", objectFit: "cover", marginRight: "15px" }}
@@ -87,43 +79,34 @@ const Cart = () => {
                     )}
                 </div>
 
-                {/* Price Details Section */}
                 <div className="col-md-4">
                     <div className="card p-3">
                         <h5 className="fw-bold mb-3">PRICE DETAILS ({cartItems.length} Items)</h5>
-                        
                         <div className="d-flex justify-content-between">
                             <p>Total MRP</p>
                             <p>₹{totalMRP}</p>
                         </div>
-
                         <div className="d-flex justify-content-between text-success">
                             <p>Discount on MRP</p>
                             <p>-₹{discount}</p>
                         </div>
-
                         <div className="d-flex justify-content-between">
                             <p>Coupon Discount</p>
                             <button className="btn btn-link p-0 text-primary">Apply Coupon</button>
                         </div>
-
                         <div className="d-flex justify-content-between">
                             <p>Platform Fee</p>
                             <p>₹{platformFee}</p>
                         </div>
-
                         <div className="d-flex justify-content-between">
                             <p>Shipping Fee</p>
                             <p className="text-success">Free</p>
                         </div>
-
                         <hr />
-
                         <div className="d-flex justify-content-between fw-bold">
                             <p>Total Amount</p>
                             <p>₹{totalAmount}</p>
                         </div>
-
                         <button className="btn btn-primary w-100 mt-3" onClick={() => setShowModal(true)}>
                             PLACE ORDER
                         </button>
@@ -131,7 +114,6 @@ const Cart = () => {
                 </div>
             </div>
 
-            {/* Modal for Payment */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Payment Details</Modal.Title>
@@ -152,7 +134,6 @@ const Cart = () => {
                 </Modal.Footer>
             </Modal>
 
-            {/* Modal for COD Details */}
             <Modal show={showCODPopup} onHide={() => setShowCODPopup(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Cash on Delivery Details</Modal.Title>
@@ -179,33 +160,39 @@ const Cart = () => {
                             <Form.Control
                                 type="text"
                                 name="ifscCode"
-                                placeholder="Enter IFSC Code"
                                 value={codDetails.ifscCode}
                                 onChange={handleInputChange}
+                                placeholder="Enter IFSC Code"
                                 required
                             />
-                        </Form.Group>
+                            </Form.Group>
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Amount</Form.Label>
-                            <Form.Control
-                                type="number"
-                                name="amount"
-                                placeholder="Enter Amount"
-                                value={codDetails.amount}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Amount</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    name="amount"
+                                    value={codDetails.amount}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter Amount"
+                                    required
+                                />
+                            </Form.Group>
 
-                        <Button variant="primary" type="submit" className="w-100">
-                            Confirm COD
-                        </Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-        </div>
-    );
-};
+                            <Button variant="primary" type="submit" className="w-100">
+                                Submit COD Details
+                            </Button>
+                            </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowCODPopup(false)}>
+                                    Cancel
+                                </Button>
+                            </Modal.Footer>
+                            </Modal>
+                            </div>
+                            );
+                            };
 
-export default Cart;
+                            export default Cart;
+

@@ -4,6 +4,7 @@ import Footer from './Footer';
 
 const Section = () => {
   return (
+    <>
     <div className="bg-dark text-white p-5 position-relative">
       <div className="container text-center">
         <h1 className="display-4">Welcome to Your Favorite Store</h1>
@@ -25,10 +26,26 @@ const Section = () => {
           <button className="btn btn-primary rounded-pill shadow-sm">View Offers</button>
         </Link>
       </div>
-
+      <div className="bg-light text-dark p-5 mt-5 text-center">
+        <h2 className="fw-bold">Limited Time Offer!</h2>
+        <p className="lead">Get up to 50% off on selected items. Hurry up, offer ends soon!</p>
+        <Link to="/offers">
+          <button className="btn btn-primary rounded-pill shadow-sm">View Offers</button>
+        </Link>
+      </div>  
+      <div className="bg-light text-dark p-5 mt-5 text-center">
+        <h2 className="fw-bold">Limited Time Offer!</h2>
+        <p className="lead">Get up to 50% off on selected items. Hurry up, offer ends soon!</p>
+        <Link to="/offers">
+          <button className="btn btn-primary rounded-pill shadow-sm">View Offers</button>
+        </Link>
+      </div>
       {/* Footer Section */}
-      <Footer />
+     
     </div>
+    <Footer />
+    </>
+    
   );
 }
 

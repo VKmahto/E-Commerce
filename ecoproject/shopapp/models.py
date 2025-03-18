@@ -68,7 +68,7 @@ class Product(models.Model):
     objects     = models.Manager()
     id          = models.AutoField(primary_key=True)
     name        = models.CharField(max_length=100)
-    image       = models.ImageField(upload_to="img/")
+    # image       = models.ImageField(upload_to="img/")
     description = models.TextField(blank=True,null=True)
     price       = models.DecimalField(max_digits=10, decimal_places=2)
     category    = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE)
@@ -85,6 +85,20 @@ class Product(models.Model):
         verbose_name = 'Product'
         verbose_name_plural = 'Product'
     
+class ProductImage(models.Model):
+    objects = models.Manager()
+    id = models.AutoField(primary_key=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="img/")
+    status = models.IntegerField(default=1)
+    username = models.CharField(max_length=30, null=True)
+    datetime = models.DateTimeField(auto_now_add=True, null=True)
+
+    class Meta:
+        db_table = 'tbl_product_image'
+        managed = True
+        verbose_name = 'Product Image'
+        verbose_name_plural = 'Product Image'
 
 
 

@@ -98,7 +98,6 @@ def category(request):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(["GET", "POST", "PUT"])
 def product(request):
     if request.method == "GET":
@@ -107,26 +106,56 @@ def product(request):
         return Response(serializer.data)
 
     elif request.method == "POST":
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
-    
+        product_serializer = ProductSerializer(data=request.data)
+        
+        if product_serializer.is_valid():
+            product = product_serializer.save()
+
+            # Handle multiple images for ProductImage
+            images = request.FILES.getlist('images')  # Expecting 'images' as a list in form-data
+            for img in images:
+                ProductImage.objects.create(
+                    product=product,
+                    image=img,
+                    status=request.data.get('status', 1),
+                    username=request.data.get('username', None)
+                )
+            return Response(product_serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(product_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     elif request.method == "PUT":
         try:
-            product = Product.objects.get(id=request.data["id"])  
+            product = Product.objects.get(id=request.data["id"])
         except Product.DoesNotExist:
             return Response({"detail": "Product not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        if "image" in request.FILES:
-            product.image = request.FILES["image"]
+        # Update product details including image if provided
+        product_serializer = ProductSerializer(product, data=request.data, partial=True)
+        if product_serializer.is_valid():
+            product_serializer.save()
 
-        serializer = ProductSerializer(product, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # Optional: Handle new images for ProductImage (if provided)
+            new_images = request.FILES.getlist('images')
+            for img in new_images:
+                ProductImage.objects.create(
+                    product=product,
+                    image=img,
+                    status=request.data.get('status', 1),
+                    username=request.data.get('username', None)
+                )
+            return Response(product_serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(product_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET"])
+def product_images(request, product_id):
+    try:
+        images = ProductImage.objects.filter(product_id=product_id)
+        serializer = ProductImageSerializer(images, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except ProductImage.DoesNotExist:
+        return Response({"error": "Images not found"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(["GET"])
 def productviewdtls(request, id):

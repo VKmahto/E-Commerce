@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="fixed-bottom">
+    <footer className="footer bg-drak text-light">
       <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm" style={{ height: "69px" }}>
           <div className="container d-flex justify-content-center">
