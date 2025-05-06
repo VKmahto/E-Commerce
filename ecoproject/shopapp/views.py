@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-# from django.contrib.auth import check_password
 from django.contrib.auth.hashers import check_password
 from .models import *
 import random
@@ -17,7 +16,125 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.getenv("OPENROUTER_API_KEY"),  # <-- Your OpenRouter API key from .env
+)
+
+
+COMPANY_CONTEXT = """
+    You are Askly, a smart AI assistant for SHOPPIT — an e-commerce website specializing in electronic products.
+
+    Bot Behavior Guidelines:
+    - Answer only the user's exact question.
+    - Avoid paragraphs.
+    - Do not assume or infer answers unless explicitly asked.
+    - If multiple questions are asked, answer only the first.
+    - If the question is unclear or not found in known data, respond with: "I'm not sure, please contact support."
+    - Never provide more information than requested.
+    - Do not respond to generic keywords; wait for a full question.
+    - Break the response topic by topic
+    - Do NOT use bold or special formatting like asterisks
+
+
+    Company Overview:
+    - SHOPPIT is a modern online store for electronics.
+    - It is designed and developed by Vivek, a software engineer with expertise in web and AI development.
+    - The site supports product browsing, cart management, and PayPal payments.
+
+    Product Categories:
+    - Smartphones
+    - Laptops
+    - Audio equipment (e.g., headphones, earbuds)
+    - Televisions
+
+    Featured Products:
+    - Ultra HD Smart TVs
+    - Wireless Earbuds
+    - Gaming Laptops
+    - High-end Smartphones
+
+    Popular Brands:
+    - Samsung
+    - Apple
+    - Sony
+    - Dell
+    - Lenovo
+    - HP
+    - MacBook (Apple)
+
+    Pricing & Offers:
+    - Regular prices are listed on each product.
+    - Offers include up to 50% OFF in flash sales.
+    - Prices range from ₹7,999 to ₹89,999 based on category and features.
+
+    Support and Contact:
+    - For queries or help, customers can use the chatbot or reach out via the contact page (to be specified).
+    - Booking or purchases are done online using secure checkout.
+
+    Developer Info:
+    - The website was developed by Vivek.
+    - Vivek is an MCA graduate and has 2 years of experience in web and AI development.
+    - He is skilled in Python, PHP, Java, JavaScript, and familiar with Django, Flask, and React.
+    - Vivek emphasizes clean code, good UX, and team collaboration.
+
+    Services Used in SHOPPIT:
+    - Web Framework: Django
+    - Frontend Library: React
+    - Database: PostgreSQL (or SQLite in development)
+    - Payment Integration: PayPal
+    - Hosting: Vercel for frontend, Heroku for backend
+    - Authentication: Django built-in user authentication
+
+    Limitations:
+    - Do not guess or make up features.
+    - Never share personal data or assumptions.
+
+    For Bot:
+    - Do not answer based only on keywords, wait for full questions.
+    - Do not give extra info beyond the question.
+"""
+
+@csrf_exempt
+@api_view(["POST"])
+def chat_with_bot(request, key):
+    """
+    Django view to handle chat API using OpenRouter.
+    """
+
+    if request.method != "POST":
+        return Response({"error": "Only POST requests are allowed."}, status=405)
+
+    user_message = request.data.get("message", "")
+    if not user_message:
+        return Response({"error": "Message is required."}, status=400)
+
+    try:
+        messages = [
+            {"role": "system", "content": COMPANY_CONTEXT},
+            {"role": "user", "content": user_message}
+        ]
+
+        response = client.chat.completions.create(
+            model="deepseek/deepseek-r1:free",
+            messages=messages,
+            extra_headers={
+                "HTTP-Referer": "http://localhost:2000/shopapp/api/chat/",
+                "X-Title": "My Test Bot",
+            },
+        )
+
+        bot_reply = response.choices[0].message.content.strip()
+        return Response({"reply": bot_reply}, status=200)
+
+    except Exception as e:
+        return Response({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+    
 
 class UserRegistrationView(APIView):
     def generate_emp_code(self):
@@ -178,3 +295,5 @@ def create_order(request):
         })
 
         return JsonResponse({"order_id": payment["id"], "amount": payment["amount"]})
+
+

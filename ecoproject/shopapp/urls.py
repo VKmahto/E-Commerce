@@ -10,6 +10,8 @@ urlpatterns = [
     path('api/login/', UserLoginView.as_view(), name='user-login'),
     path('api/product/<int:id>/', views.productviewdtls, name='productviewdtls'),
     path('api/create-order/', views.create_order, name='create-order'),
+    path('api/chat/', views.chat_with_bot, name='chat_with_bot'),
+
 
 ]
 

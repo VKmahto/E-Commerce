@@ -9,7 +9,8 @@ import Login from "./components/Login"
 import Register from "./components/Register"
 import Product_view_dtls from "./components/Product_view_dtls"
 import Cart from "./components/Cart"
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js"
+import Chatbot from "./components/ui/Chatbot"; // No changes needed here
 
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
               <Route path="/register" element={<Register />} />
             </Routes>
           </main>
+          <Chatbot />
         </div>
       </Router>
     </PayPalScriptProvider>

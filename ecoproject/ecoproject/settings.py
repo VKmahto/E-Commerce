@@ -11,10 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
 import os
-
-
 
 
 
@@ -159,3 +156,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 RAZORPAY_KEY_ID = "rzp_test_v7C9DgSDEywjGi"
 RAZORPAY_KEY_SECRET = "mayn0Ro9gTKdUWH9A6PPVEDc"
+
